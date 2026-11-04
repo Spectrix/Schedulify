@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Schedulify</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <aside class="sidebar">
+    <div class="brand">
+      <div class="logo">
+        <img src="logo.png" alt="logo">
+      </div>
+      <div><h2>Schedulify</h2><small>Simulasi Algoritma<br>Penjadwalan</small></div>
+    </div>
+    <nav>
+      <button class="nav active" data-page="dashboard">Dashboard</button>
+      <button class="nav" data-page="sjf">Simulasi SJF</button>
+      <button class="nav" data-page="mlfq">Simulasi MLFQ</button>
+      <button class="nav" data-page="about">Anggota Kelompok</button>
+    </nav>
+  </aside>
+
+  <main class="main">
+    <header class="topbar">
+      <span><b id="breadcrumb">Dashboard</b></span>
+      <span class="group">Kelompok 10</span>
+    </header>
+
+    <!-- HALAMAN 1: DASHBOARD -->
+    <section class="page active" id="dashboard">
+      <div class="hero">
+        <p class="eyebrow">CPU SCHEDULING SIMULATOR</p>
+        <h1>Simulasi Algoritma<br><span>Penjadwalan</span></h1>
+        <p>Hitung dan bandingkan performa algoritma penjadwalan CPU dengan mudah.</p>
+        <button class="btn" onclick="showPage('sjf')">Mulai Simulasi →</button>
+      </div>
+
+      <div class="section-title">
+        <div><small>PILIH ALGORITMA</small><h2>Mulai dari sini</h2></div>
+      </div>
+
+      <div class="cards">
+        <article class="card">
+          <div class="icon ">▦</div>
+          <span class="tag">NON-PREEMPTIVE</span>
+          <h3>Shortest Job First (SJF)</h3>
+          <p>Memilih proses dengan Burst Time paling pendek di antara proses yang sudah tiba.</p>
+          <button class="text-btn" onclick="showPage('sjf')">Buka simulasi →</button>
+        </article>
+
+        <article class="card">
+          <div class="icon cyan">▰</div>
+          <span class="tag">MULTI-QUEUE</span>
+          <h3>Multilevel Feedback Queue</h3>
+          <p>Menjadwalkan proses melalui beberapa antrean dengan prioritas dan quantum berbeda.</p>
+          <button class="text-btn" onclick="showPage('mlfq')">Buka simulasi →</button>
+        </article>
+      </div>
+    </section>
+
+    <!-- HALAMAN 2: SJF -->
+    <section class="page" id="sjf">
+      <div class="page-title">
+        <small>SIMULASI ALGORITMA</small>
+        <h1>Shortest Job First <span class="badge">SJF</span></h1>
+        <p>Masukkan data proses untuk menghitung urutan eksekusi CPU.</p>
+      </div>
+
+      <div class="workspace">
+        <div class="panel">
+          <h2>▤ Data Proses</h2>
+          <div class="table-scroll">
+            <table>
+              <thead><tr><th>Proses</th><th>Arrival Time</th><th>Burst Time</th><th></th></tr></thead>
+              <tbody id="sjf-input"></tbody>
+            </table>
+          </div>
+          <div class="actions">
+            <button class="btn-outline" onclick="addProcess('sjf')">＋ Tambah Proses</button>
+            <button class="btn-light" onclick="resetTable('sjf')">Reset</button>
+          </div>
+          <small class="hint">AT harus ≥ 0 dan BT harus ≥ 1.</small>
+        </div>
+
+        <div class="panel settings">
+          <h2>⚙ Pengaturan</h2>
+          <label>Algoritma</label>
+          <div class="selected">🔵 Shortest Job First</div>
+          <label>Jenis penjadwalan</label>
+          <div class="selected">Non-preemptive</div>
+          <p class="hint">Proses berjalan sampai selesai sebelum proses lain dipilih.</p>
+          <button class="btn full" onclick="calculate('sjf')">▦ Hitung Penjadwalan</button>
+        </div>
+      </div>
+
+      <div class="panel results">
+        <h2>▥ Hasil Simulasi</h2>
+        <div id="sjf-result" class="empty">Belum ada hasil. Masukkan data proses lalu tekan Hitung Penjadwalan.</div>
+      </div>
+    </section>
+
+    <!-- HALAMAN 3: MLFQ -->
+    <section class="page" id="mlfq">
+      <div class="page-title">
+        <small>SIMULASI ALGORITMA</small>
+        <h1>Multilevel Feedback Queue <span class="badge purple-badge">MLFQ</span></h1>
+        <p>Simulasi proses dengan tiga antrean prioritas.</p>
+      </div>
+
+      <div class="workspace">
+        <div class="panel">
+          <h2>▤ Data Proses</h2>
+          <div class="table-scroll">
+            <table>
+              <thead><tr><th>Proses</th><th>Arrival Time</th><th>Burst Time</th><th></th></tr></thead>
+              <tbody id="mlfq-input"></tbody>
+            </table>
+          </div>
+          <div class="actions">
+            <button class="btn-outline" onclick="addProcess('mlfq')">＋ Tambah Proses</button>
+            <button class="btn-light" onclick="resetTable('mlfq')">Reset</button>
+          </div>
+          <small class="hint">Semua proses baru masuk ke antrean Q1.</small>
+        </div>
+
+        <div class="panel settings">
+          <h2>⚙ Pengaturan MLFQ</h2>
+          <label for="q1">Quantum Q1</label>
+          <input class="number-input" id="q1" type="number" min="1" value="2">
+          <label for="q2">Quantum Q2</label>
+          <input class="number-input" id="q2" type="number" min="1" value="4">
+          <p class="hint">Q1 dan Q2 menggunakan Round Robin. Q3 menggunakan FCFS sampai proses selesai.</p>
+          <button class="btn full purple-btn" onclick="calculate('mlfq')">▦ Hitung Penjadwalan</button>
+        </div>
+      </div>
+
+      <div class="panel results">
+        <h2>▥ Hasil Simulasi</h2>
+        <div id="mlfq-result" class="empty">Belum ada hasil. Masukkan data proses lalu tekan Hitung Penjadwalan.</div>
+      </div>
+    </section>
+
+    <!-- HALAMAN ANGGOTA KELOMPOK -->
+    <section class="page" id="about">
+      <div class="page-title">
+        <small>ANGGOTA KELOMPOK</small>
+      </div>
+      <div class="cards">
+      </div>
+      <div class="panel members">
+        <h2>Anggota Kelompok 10</h2>
+        <p>Muhammad Ilham — 2501020111</p>
+        <p>Nurul Hidayah — 2501020146</p>
+        <p>Selvi — 2501020152</p>
+        <p>Naufal Putra Azaril — 2501020108</p>
+      </div>
+    </section>
+
+    <footer>Schedulify · Simulasi Algoritma Penjadwalan · Kelompok 10</footer>
+  </main>
+  <script src="script.js"></script>
+</body>
+</html>
